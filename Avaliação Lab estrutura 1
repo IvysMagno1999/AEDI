@@ -1,0 +1,294 @@
+//Laboratório estrutura 01 - Grupo: Giselia Kaline, Ivys Magno, Lucas Abrantes
+
+// listar todos os contatos da agenda por nome
+#include<stdio.h>
+
+
+void listarContatos();
+
+int main(){
+    //chamando a função de lsiat contatos no main()
+    listarContatos();
+}
+
+//função que que vai listar os contatos
+void listarContatos(){
+    int id;
+    char nome[80];
+    char profissao[80];
+    char telefone[80];
+
+    //vou abrir o arquivo para leitura
+    FILE *file = fopen("agenda.dat", "r");
+    //veririco se o arquivo está correto
+    //caso contrário, o programa será finalizado
+    if(!file){
+        printf("Impossível abrir o arquivo\n");
+    }
+
+    //enquanto não ler todo o arquivo
+    //irei percorrer todo o arquivo e imprimir na tela
+    //id, nome, profissão e telefone
+    while(!feof(file)){
+        fscanf(file, "%d %s %s %s", &id, nome, profissao, telefone); 
+        printf("(%d) (%s) (%s) (%s)\n", id, nome, profissao, telefone);
+    }
+    //por fim, fecho o arquivo após realizar toda a leitura
+    fclose(file);
+}
+
+// lista com todos os contatos da agenda por nome e telefone
+#include<stdio.h>
+
+void listarContatos();
+
+int main(){
+    //chamo a funçao listar contatos
+    listarContatos();   
+}
+
+void listarContatos(){
+    int id;
+    char nome[80];
+    char profissao[80];
+    char telefone[80];
+
+    //vou abrir o arquivo para leitura
+    FILE *file = fopen("agenda.dat", "r"); 
+    //veririco se o arquivo está correto
+    //caso contrário, o programa será finalizado
+    if(!file){
+        printf("Impossível abrir o arquivo\n");
+    }
+    
+    //enquanto não ler todo o arquivo
+    //irei percorrer todo o arquivo e imprimir na tela
+    // nome e telefone
+    while(!feof(file)){ 
+        fscanf(file, "%d %s %s %s", &id, nome, profissao, telefone); 
+        printf("Nome -> (%s) numero->(%s)\n", nome, telefone); 
+    }
+    //finalizo o arquivo
+    fclose(file);
+}
+
+//Listar contatos em função da profissão
+#include<stdio.h>
+
+void listarContatosPorProfissao(char *p);
+// criamos um ponteiro como parametro
+int main(){
+char t[80];
+//crio um ponteiro que armazena o endereço da variavel t
+char *ponteiro = &t[80];
+    printf("--------------------------------------------------------------------\n");
+    printf("Digite a profissão e listarei os contatos que trabalham nessa área: ");
+    printf("\n--------------------------------------------------------------------\n");
+    scanf("%c",&t[80]);
+    listarContatosPorProfissao(ponteiro);    
+}
+
+//funcao criada para listar contatos de acordo com a profissão
+void listarContatosPorProfissao(char *p){
+    int id;
+    char nome[80];
+    char profissao[80];
+    char telefone[80];
+    //criação do arquivo f1 e realizar a leitura
+    FILE *f1 = fopen("agenda.dat", "r");
+    //criar outro ponteiro para meu arquivo e fazer a escrita
+    FILE *f2 = fopen("agenda_aux.dat", "w");
+    if(!f1){
+        printf("Impossivel abrir esse arquivo\n");
+    }
+
+    if(!f2){
+        printf("Impossivel abrir esse arquivo\n");
+    }
+
+    //enquanto nao ler o meu arquivo por completo
+    //irei ler todas os elementos do meu arquivo
+    while (!feof(f1)){
+        int i;
+        fscanf(f1,"%d %s %s %s", &id, nome, profissao, telefone);
+
+    }
+}
+
+ //Remova um contato a partir de um identificador (ID)
+#include<stdio.h>
+
+//função recebe com parametro o id
+//onde vai apagar o contato digitado pelo usuario
+void apagar(int id);
+
+int main(){
+    int id;
+    printf("Informe o ID da agenda que deseja excluir: ");
+    scanf("%d", &id);
+    apagar(id);
+}
+
+void apagar(int idA){
+    //crio um arquivo auxiliar para receber os outros elementos que não
+    //foram excluidos
+    FILE *f1 = fopen("agenda_aux.dat", "w"); 
+
+    int id;
+    char nome[80];
+    char profissao[80];
+    char telefone[80];
+    //Abre o arquivo para a leitura
+    FILE *f2 = fopen("agenda.dat", "r");
+    //se ao abrir o arquivo, for diferente de f2
+    //o programa será encerrado
+    if(!f2){
+        printf("Impossível abrir o arquivo\n");
+    }
+
+    printf("\nAgenda antes da exclusão\n");
+    //ler todo o arquivo f2
+    while(!feof(f2)){
+        //ler todos os elementos de f2
+        fscanf(f2, "%d %s %s %s", &id, nome, profissao, telefone); 
+        //imprime todos os elementos do meu arquivo
+        printf("(%d) (%s) (%s)\n", id, nome, telefone);
+        //se o id for diferente do digitado pelo usuario
+        //os dados serão escritos no arquivo auxiliar: agenda_aux.dat
+        if(id != idA){
+            fprintf(f1, "%d %s %s %s\n", id, nome, profissao, telefone);
+        }
+    }
+    printf("\n\nExclusão realizada com sucesso\n\n");
+    fclose(f1);
+    fclose(f2);
+    //excluo o arquivo agenda.dat
+    remove("agenda.dat");
+    //passo todos os dados para um arquivo auxiliar
+    rename("agenda_aux.dat", "agenda.dat"); 
+
+    //posso abrir o arquivo renomeado para leitura
+    //verificar se os dados estao corretos
+    FILE *f3 = fopen("agenda_aux.dat", "r"); 
+    if(!f3){
+        printf("Impossível abrir o arquivo\n");
+    }
+    
+    //irei percorrer todo meu arquivo
+    while(!feof(f3)){
+        //leio todos os elementos
+        fscanf(f3, "%d %s %s %s", &id, nome, profissao, telefone);
+        //exibo na tela id, nome. telefone
+        printf("(%d) (%s) (%s)\n", id, nome, telefone);
+    }
+    //fecho o arquivo
+    fclose(f3); 
+
+}
+
+//Apagando todos os contatos
+#include<stdio.h>
+
+ void apagarContatos();
+
+ int main(){
+    //chamo minha funcao para apagar todos os contatos
+    apagarContatos();
+ }
+
+ void apagarContatos(){
+     //abrir o arquivo para leitura
+     FILE *f1 = fopen("agenda.dat", "r");
+    //se a leitura do arquivo for diferente de f1
+    //encerro o programa
+      if(!f1){
+        printf("Impossível abrir o arquivo\n");
+    }
+    //crio um arquivo auxiliar para escrita
+    FILE *f2 = fopen("agenda_aux.dat","w");
+
+    int id;
+    char nome[80];
+    char profissao[80];
+    char telefone[80];
+     
+    //percorre todos os elementos do meu arquivo
+    while(!feof(f1)){
+        //leio todos os contatos
+        fscanf(f1,"%d %s %s %s", &id, nome, profissao, telefone); 
+        //escrevo no meu arquivo auxiliar os contatos excluidos
+        fprintf(f2,"(%d) contato Excluido\n", id); 
+    }
+    //fecho todos os arquivos
+    fclose(f1);
+    fclose(f2);
+
+
+    remove("agenda.dat");
+    rename("agenda_aux.dat", "agenda.dat");
+
+    printf("Contatos excluidos com sucesso!\n");
+    printf("Fim do programa!");
+ }
+ 
+ //Editar um contato a partir de um indentificador (ID)
+#include<stdio.h>
+
+void editar(int idA); 
+
+int main(){
+    int a; 
+    printf("Informe o id do contato que deseja editar: ");
+    scanf("%i",&a);
+    //chamo a funcao editar
+    editar(a);
+}
+
+void editar(int idA){
+    //crio dois ponteiros para meus arquivos
+    //um aixilar para escrever
+    //o outro para realizar a leitura
+    FILE *f1 = fopen("agenda_aux.dat", "w"); 
+    FILE *f2 = fopen("agenda.dat", "r"); 
+
+    int id;
+    char nome[80];
+    char profissao[80];
+    char telefone[80];
+    //se a leitura do arquivo for diferente de f1
+    //encerro o programa
+    if (!f1){
+        printf("Arquivo nao encontrado!\n");
+    }
+    //se a leitura do arquivo for diferente de f2
+    //encerro o programa
+    if(!f2){  
+        printf("Arquivo nao encontrado\n");
+    }
+    
+    
+    while(!feof(f2)){
+        //um laco para ler todo o arquivo f2
+        fscanf(f2, "%d %s %s %s",&id, nome, profissao, telefone);
+        //exibir os elementos do arquivo
+        printf("(%d) (%s) (%s)\n",id, nome, telefone);
+    
+        //se o id for diferente do digitado pelo usuario
+        //os dados serão escritos no arquivo auxiliar: agenda_aux.dat
+        if(id != idA){
+            fprintf(f1,"%d %s %s %s\n",id, nome, profissao,telefone);
+
+        //caso o id seja igual ao id digitado pleo usuario
+        //ira pedir um novo nome
+        }else if(id == idA){
+            printf("Insira um novo nome para esse id: ");
+            scanf("%s",nome);
+            //dessa forma, irei sobrescrever o nome ja existente. Colocar o nome digitado pelo usuario
+            fprintf(f1,"%d %s %s %s\n",id, nome, profissao,telefone);    
+        }       
+    }
+    //fecho todos os arquivos
+    fclose(f1);
+    fclose(f2);
+    printf("FIM do programa!");
+}
